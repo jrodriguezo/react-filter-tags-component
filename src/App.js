@@ -79,24 +79,24 @@ function App() {
   const addTag = useCallback(
     (tag) => () => {
       if (!tags.includes(tag)) {
-        return setTags((oldArray) => [...oldArray, tag]);
+        return setTags((prevTags) => [...prevTags, tag]);
       }
     },
     [tags]
   );
 
   const deleteTag = useCallback(
-    (tag) => () => {
-      const array = tags.filter((item) => {
-        return item !== tag;
+    (tagId) => () => {
+      const tagsFiltered = tags.filter((tag) => {
+        return tag !== tagId;
       });
-      setTags(array);
+      setTags(tagsFiltered);
     },
     [tags]
   );
 
-  const matchTags = (arr, target) => {
-    return target.every((v) => arr.includes(v));
+  const matchTags = (current, target) => {
+    return target.every((tag) => current.includes(tag));
   };
 
   return (
