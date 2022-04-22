@@ -79,7 +79,6 @@ function App() {
   const sidebarData = SIDEBAR;
   const tagsData = TAGS;
 
-
   const addTag = useCallback(
     (tag) => () => {
       if (!tags.includes(tag)) {
@@ -134,11 +133,13 @@ function App() {
                   <>
                     <li className={`page-${key}`}>{page.title}</li>
                     {tags.map((tag) => {
+                      const tagColor = tagsData.tags[tag]
                       return (
                         <button
                           key={`add-button-${key}`}
                           type="button"
                           onClick={addTag(tag)}
+                          style={{color: tagColor?.color || "#222222"}}
                         >
                           #{tag}
                         </button>
