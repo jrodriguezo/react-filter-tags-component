@@ -79,8 +79,6 @@ function App() {
   const sidebarData = SIDEBAR;
   const tagsData = TAGS;
 
-  console.log("sidebar", sidebarData);
-  console.log("tags", tagsData);
 
   const addTag = useCallback(
     (tag) => () => {
@@ -127,57 +125,30 @@ function App() {
       <div className="sidebar">
         <ul className={`card ${isTrue}`}>
           {sidebarData.pages.map((page, key) => {
-
-            return (
-              <>
-              <li className={`page-${key}`}>{page.title}</li>
-              {
-              
-              page.subpages.filter((subpage) => {
-                return matchTags(subpage.tags, tags)
-              }).map(({tags}) => {
-                  return tags.map(tag => {
-                    return (
-                      <button
-                        key={`add-button-${key}`}
-                        type="button"
-                        onClick={addTag(tag)}
-                      >
-                        #{tag}
-                      </button>
-                    );
-                  })
-
-                })}
-              </>
-            );
-
+            return page.subpages
+              .filter((subpage) => {
+                return matchTags(subpage.tags, tags);
+              })
+              .map(({ tags }) => {
+                return (
+                  <>
+                    <li className={`page-${key}`}>{page.title}</li>
+                    {tags.map((tag) => {
+                      return (
+                        <button
+                          key={`add-button-${key}`}
+                          type="button"
+                          onClick={addTag(tag)}
+                        >
+                          #{tag}
+                        </button>
+                      );
+                    })}
+                  </>
+                );
+              });
           })}
         </ul>
-
-        {/*projects
-          .filter((proj) => matchTags(proj.tags, tags))
-          .map(({ title, description, tags }, key) => {
-            return (
-              <div key={`card-${key}`} className={`card ${isTrue}`}>
-                <div>
-                  <p>{title}</p>
-                  <p>{description}</p>
-                </div>
-                {tags.map((tag) => {
-                  return (
-                    <button
-                      key={`add-button-${key}`}
-                      type="button"
-                      onClick={addTag(tag)}
-                    >
-                      #{tag}
-                    </button>
-                  );
-                })}
-              </div>
-            );
-          })*/}
       </div>
       <div className={`docs ${isTrue}`}>
         <h1>Docs go here</h1>
