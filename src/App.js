@@ -7,14 +7,32 @@ import { MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md";
 import useCollapsable from "./hooks/useCollapsable";
 
 function App() {
-
+  /* JSON schemes that defines the pages and subpages of sidebar and color respectively */
   const sidebarData = SIDEBAR;
   const tagsData = TAGS;
 
-  const [openCollapsable, isCollapseOpened ] = useCollapsable(sidebarData)
- 
+  const [openCollapsable, isCollapseOpened] = useCollapsable(sidebarData);
 
   const [tags, setTags] = useState([]);
+
+  const addTag = useCallback(
+    (tag) => () => {
+      if (!tags.includes(tag)) {
+        return setTags((prevTags) => [...prevTags, tag]);
+      }
+    },
+    [tags]
+  );
+
+  const deleteTag = useCallback(
+    (tagId) => () => {
+      const tagsFiltered = tags.filter((tag) => {
+        return tag !== tagId;
+      });
+      setTags(tagsFiltered);
+    },
+    [tags]
+  );
 
   const matchTags = (current, target) => {
     return target.every((tag) => current.includes(tag));
@@ -29,33 +47,9 @@ function App() {
     return { title, pageFiltered };
   });
 
-  const addTag = useCallback(
-    (tag) => () => {
-      if (!tags.includes(tag)) {
-        return setTags((prevTags) => [...prevTags, tag]);
-      }
-    },
-    [tags]
-  );
-
-
-  const deleteTag = useCallback(
-    (tagId) => () => {
-      const tagsFiltered = tags.filter((tag) => {
-        return tag !== tagId;
-      });
-      setTags(tagsFiltered);
-    },
-    [tags]
-  );
-
-
-
-
-
   return (
     <>
-    {tags.length > 0 && (
+      {tags.length > 0 && (
         <div className="header">
           {tags.map((tag, key) => {
             return (
@@ -93,7 +87,6 @@ function App() {
                         )}
                       </div>
                     </button>
-
                     <ul>
                       {pageFiltered.map(({ title: name, content, tags }) => {
                         return (
