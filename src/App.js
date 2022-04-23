@@ -4,37 +4,17 @@ import "./App.css";
 import { SIDEBAR } from "./data/sidebar";
 import { TAGS } from "./data/tags";
 import { MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md";
-import getInitialStateOfCollapsablePages from "./services/getInitialStateOfCollapsablePages";
+import useCollapsable from "./hooks/useCollapsable";
 
 function App() {
-  const [tags, setTags] = useState([]);
 
   const sidebarData = SIDEBAR;
   const tagsData = TAGS;
 
-  const initialStateForOpenCollapse =
-    getInitialStateOfCollapsablePages(sidebarData);
+  const [openCollapsable, isCollapseOpened ] = useCollapsable(sidebarData)
+ 
 
-  const [openCollapse, setOpenCollapse] = useState(initialStateForOpenCollapse);
-
-  const addTag = useCallback(
-    (tag) => () => {
-      if (!tags.includes(tag)) {
-        return setTags((prevTags) => [...prevTags, tag]);
-      }
-    },
-    [tags]
-  );
-
-  const deleteTag = useCallback(
-    (tagId) => () => {
-      const tagsFiltered = tags.filter((tag) => {
-        return tag !== tagId;
-      });
-      setTags(tagsFiltered);
-    },
-    [tags]
-  );
+  const [tags, setTags] = useState([]);
 
   const matchTags = (current, target) => {
     return target.every((tag) => current.includes(tag));
@@ -49,25 +29,33 @@ function App() {
     return { title, pageFiltered };
   });
 
-  const openCollapsable = useCallback(
-    (tagId) => () => {
-      setOpenCollapse((prev) => ({
-        ...prev,
-        settings: prev.settings.map((item) => {
-          return item.id === tagId ? { ...item, open: !item.open } : item;
-        }),
-      }));
+  const addTag = useCallback(
+    (tag) => () => {
+      if (!tags.includes(tag)) {
+        return setTags((prevTags) => [...prevTags, tag]);
+      }
     },
-    []
+    [tags]
   );
 
-  const isCollapseOpened = (titleId) => {
-    return openCollapse.settings.find((item) => item.id === titleId).open;
-  };
+
+  const deleteTag = useCallback(
+    (tagId) => () => {
+      const tagsFiltered = tags.filter((tag) => {
+        return tag !== tagId;
+      });
+      setTags(tagsFiltered);
+    },
+    [tags]
+  );
+
+
+
+
 
   return (
     <>
-      {tags.length > 0 && (
+    {tags.length > 0 && (
         <div className="header">
           {tags.map((tag, key) => {
             return (
