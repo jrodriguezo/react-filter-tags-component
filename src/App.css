@@ -29,7 +29,7 @@ button:hover {
 .card {
   padding: 20px;
   margin: 20px;
-  background-color: var(--third-color);
+  background-color: var(--fourth-color);
 }
 
 .card.atleast-one-tag:first-child{
@@ -56,6 +56,14 @@ button:hover {
   position: relative;
   justify-content: center;
   padding: 20px 10px;
+}
+
+.tag{
+  margin: 0;
+  padding: 0;
+}
+.tag button{
+  padding: 0;
 }
 
 .parent {
@@ -121,4 +129,8 @@ button:hover {
 .sidebar::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
+}
+
+.ReactCollapse--collapse {
+  transition: height 500ms;
 }

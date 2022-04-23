@@ -1,10 +1,21 @@
 import { useState, useCallback } from "react";
+import { Collapse } from "react-collapse";
 import "./App.css";
 import { SIDEBAR } from "./data/sidebar";
 import { TAGS } from "./data/tags";
 
 function App() {
   const [tags, setTags] = useState(["game"]);
+  const stateForCollapse = {
+    settings: [
+      { id: "Collapse 1", open: false },
+      { id: "Collapse 2", open: false },
+      { id: "Collapse 3", open: false },
+      { id: "Collapse 4", open: false },
+      { id: "Collapse 5", open: false },
+    ],
+  };
+  const [openCollapse, setOpenCollapse] = useState(stateForCollapse);
 
   const projects = [
     {
@@ -104,6 +115,24 @@ function App() {
 
   const isTrue = tags.length > 0 ? "atleast-one-tag" : "";
 
+  const filteredPages = sidebarData.pages.map(({ title, subpages }) => {
+    const pageFiltered = subpages.filter((subpage) => {
+      return matchTags(subpage.tags, tags);
+    });
+    return { title, pageFiltered };
+  });
+
+  const openCollapsable = useCallback(
+    (tagId) => () => {
+      setOpenCollapse(prev => ({
+        ...prev,
+        settings: prev.settings.map(item=> {
+          return item.id === tagId ? {...item, open: !item.open } : item
+        })}));
+    },
+    []
+  );
+
   return (
     <>
       {tags.length > 0 && (
@@ -123,31 +152,46 @@ function App() {
       )}
       <div className="sidebar">
         <ul className={`card ${isTrue}`}>
-          {sidebarData.pages.map((page, key) => {
-            return page.subpages
-              .filter((subpage) => {
-                return matchTags(subpage.tags, tags);
-              })
-              .map(({ tags }) => {
-                return (
-                  <>
-                    <li className={`page-${key}`}>{page.title}</li>
-                    {tags.map((tag) => {
-                      const tagColor = tagsData.tags[tag]
-                      return (
-                        <button
-                          key={`add-button-${key}`}
-                          type="button"
-                          onClick={addTag(tag)}
-                          style={{color: tagColor?.color || "#222222"}}
-                        >
-                          #{tag}
-                        </button>
-                      );
-                    })}
-                  </>
-                );
-              });
+          {filteredPages.map(({ title, pageFiltered }) => {
+            if (pageFiltered.length > 0) {
+              return (
+                <>
+                  <li>
+                    {title}
+                    <button onClick={openCollapsable(title)}>Open</button>
+                    <ul>
+                      {pageFiltered.map(({ title: name, content, tags }) => {
+                        return (
+                          <>
+                            <Collapse isOpened={openCollapse.settings.find(item => item.id === title).open}>
+                              {name}
+                              <ul className="tag">
+                                {tags.map((tag, key) => {
+                                  const tagColor = tagsData.tags[tag];
+                                  return (
+                                    <button
+                                      key={`add-button-${key}`}
+                                      type="button"
+                                      onClick={addTag(tag)}
+                                      style={{
+                                        color: tagColor?.color || "#222222",
+                                      }}
+                                    >
+                                      #{tag}
+                                    </button>
+                                  );
+                                })}
+                              </ul>
+                            </Collapse>
+                          </>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                </>
+              );
+            }
+            return null;
           })}
         </ul>
       </div>
