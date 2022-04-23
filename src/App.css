@@ -1,13 +1,11 @@
-
-:root{
-  --primary-color: #93A8AC;
-  --secondary-color: #424B54;
-  --third-color: #E2B4BD;
-  --fourth-color: #9B6A6C;
-  --fifth-color: #FFFFFF;
+:root {
+  --primary-color: #93a8ac;
+  --secondary-color: #424b54;
+  --third-color: #e2b4bd;
+  --fourth-color: #9b6a6c;
+  --fifth-color: #ffffff;
   --primary-color-hover: #fefefec6;
 }
-
 
 button {
   padding: 5px;
@@ -16,12 +14,11 @@ button {
   margin: 5px;
 }
 
-
 button:hover {
   background-color: var(--fourth-color);
 }
 
-.sidebar button{
+.sidebar button {
   background-color: unset;
   border: unset;
 }
@@ -32,7 +29,7 @@ button:hover {
   background-color: var(--fourth-color);
 }
 
-.card.atleast-one-tag:first-child{
+.card.atleast-one-tag:first-child {
   margin-top: 70px;
 }
 
@@ -47,7 +44,7 @@ button:hover {
   margin-left: 20px;
 }
 
-.close:first-child{
+.close:first-child {
   margin-left: 0;
 }
 
@@ -58,17 +55,17 @@ button:hover {
   padding: 20px 10px;
 }
 
-.tag{
+.tag {
   margin: 0;
   padding: 0;
 }
-.tag button{
+.tag button {
   padding: 0;
 }
 
 .parent {
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
 }
 
 .header {
@@ -77,46 +74,44 @@ button:hover {
   height: 50px;
   background-color: var(--fourth-color);
   position: fixed;
-  z-index:999;
+  z-index: 999;
 }
 
-.docs{
+.docs {
   position: relative;
   width: 100%;
-  padding-left: 20px;/* padding-left must be the same as sidebar width */
+  padding-left: 20px; /* padding-left must be the same as sidebar width */
   min-height: 100vh; /* This could be anything, content should scroll vertical */
   background: var(--third-color);
-  box-sizing:border-box;
+  box-sizing: border-box;
   padding-top: 50px; /* padding-top must be the same as header height */
 }
 
-.docs.atleast-one-tag{
+.docs.atleast-one-tag {
   padding-top: 70px;
 }
 
-.sidebar{
+.sidebar {
   padding: 0; /* padding-top must be the same as header height */
-  width:500px;
+  width: 500px;
   height: 100%;
   background-color: var(--fourth-color);
-  box-sizing:border-box;
+  box-sizing: border-box;
   display: none;
   overflow-y: auto;
-  z-index:99;
+  z-index: 99;
 }
 
 @media (min-width: 940px) {
-  .sidebar{
+  .sidebar {
     display: block;
     position: fixed;
   }
-  .docs{
+  .docs {
     position: unset;
-    padding-left: 520px;/* padding-left must be the same as sidebar width */
+    padding-left: 520px; /* padding-left must be the same as sidebar width */
   }
 }
-
-
 
 .sidebar::-webkit-scrollbar {
   width: 3px;
@@ -125,7 +120,7 @@ button:hover {
 .sidebar::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px darkgrey;
 }
- 
+
 .sidebar::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
@@ -133,4 +128,20 @@ button:hover {
 
 .ReactCollapse--collapse {
   transition: height 500ms;
+}
+
+.nav-text {
+  vertical-align: middle;
+}
+.nav-text-logo {
+  margin-left: 20px;
+  vertical-align: middle;
+}
+
+.menu{
+  background-color: var(--third-color);
+}
+
+ul{
+  list-style-type: none;
 }

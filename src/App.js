@@ -3,92 +3,28 @@ import { Collapse } from "react-collapse";
 import "./App.css";
 import { SIDEBAR } from "./data/sidebar";
 import { TAGS } from "./data/tags";
+import { BsArrowDownCircle } from "react-icons/bs";
 
 function App() {
-  const [tags, setTags] = useState(["game"]);
-  const stateForCollapse = {
-    settings: [
-      { id: "Collapse 1", open: false },
-      { id: "Collapse 2", open: false },
-      { id: "Collapse 3", open: false },
-      { id: "Collapse 4", open: false },
-      { id: "Collapse 5", open: false },
-    ],
-  };
-  const [openCollapse, setOpenCollapse] = useState(stateForCollapse);
-
-  const projects = [
-    {
-      title: "Example 0",
-      description:
-        "This is an example project item. You can sort through these using the tags. You can also click a tag to add it to the filter.",
-      tags: ["react", "javascript", "game", "back-end"],
-    },
-    {
-      title: "Game of Life",
-      description: "React implementation of the game of life.",
-      tags: ["react", "javascript", "game", "web", "front-end"],
-    },
-    {
-      title: "Calculator",
-      description: "Calculator written in Javascript",
-      tags: ["javascript", "utility", "web"],
-    },
-    {
-      title: "Tic Tac Toe",
-      description: "A command-line Tic Tac Toe game written in Ruby",
-      tags: ["ruby", "game", "cli"],
-    },
-    {
-      title: "TodoList",
-      description: "Full stack todo-list written in fullstack Javascript",
-      tags: [
-        "react",
-        "javascript",
-        "node",
-        "fullstack",
-        "front-end",
-        "back-end",
-        "web",
-        "mvc",
-      ],
-    },
-    {
-      title: "Weather",
-      description: "A Weather App with React Native ",
-      tags: [
-        "react",
-        "javascript",
-        "react-native",
-        "front-end",
-        "mobile",
-        "android",
-        "ios",
-      ],
-    },
-    {
-      title: "Markdown Editor",
-      description: "Markdown Editor powered by Monaco and React",
-      tags: ["react", "javascript", "monaco", "front-end"],
-    },
-    {
-      title: "Bloggie",
-      description: "Rails-powered blog with a React front-end",
-      tags: [
-        "react",
-        "javascript",
-        "ruby",
-        "front-end",
-        "back-end",
-        "fullstack",
-        "ruby-on-rails",
-        "mvc",
-      ],
-    },
-  ];
+  const [tags, setTags] = useState([]);
 
   const sidebarData = SIDEBAR;
   const tagsData = TAGS;
+
+  const settings = [];
+
+  sidebarData.pages.map(({ title }) => {
+    return settings.push({
+      id: title,
+      open: false,
+    });
+  });
+
+  const initialStateForOpenCollapse = {
+    settings: settings,
+  };
+
+  const [openCollapse, setOpenCollapse] = useState(initialStateForOpenCollapse);
 
   const addTag = useCallback(
     (tag) => () => {
@@ -124,11 +60,12 @@ function App() {
 
   const openCollapsable = useCallback(
     (tagId) => () => {
-      setOpenCollapse(prev => ({
+      setOpenCollapse((prev) => ({
         ...prev,
-        settings: prev.settings.map(item=> {
-          return item.id === tagId ? {...item, open: !item.open } : item
-        })}));
+        settings: prev.settings.map((item) => {
+          return item.id === tagId ? { ...item, open: !item.open } : item;
+        }),
+      }));
     },
     []
   );
@@ -157,13 +94,24 @@ function App() {
               return (
                 <>
                   <li>
-                    {title}
-                    <button onClick={openCollapsable(title)}>Open</button>
+                    <div className="menu">
+                      <button onClick={openCollapsable(title)}>
+                        <span className="nav-text">{title}</span>
+                        <BsArrowDownCircle size={20} className="nav-text-logo" />
+                      </button>
+                    </div>
+
                     <ul>
                       {pageFiltered.map(({ title: name, content, tags }) => {
                         return (
                           <>
-                            <Collapse isOpened={openCollapse.settings.find(item => item.id === title).open}>
+                            <Collapse
+                              isOpened={
+                                openCollapse.settings.find(
+                                  (item) => item.id === title
+                                ).open
+                              }
+                            >
                               {name}
                               <ul className="tag">
                                 {tags.map((tag, key) => {
