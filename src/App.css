@@ -8,10 +8,8 @@
 }
 
 button {
-  padding: 5px;
   background-color: var(--primary-color);
   border-radius: 10%;
-  margin: 5px;
 }
 
 button:hover {
@@ -21,6 +19,7 @@ button:hover {
 .sidebar button {
   background-color: unset;
   border: unset;
+  width: 100%;
 }
 
 .card {
@@ -60,7 +59,9 @@ button:hover {
   padding: 0;
 }
 .tag button {
-  padding: 0;
+  padding: 5px;
+  flex-direction: row;
+  width: auto;
 }
 
 .parent {
@@ -134,12 +135,15 @@ button:hover {
   vertical-align: middle;
 }
 .nav-text-logo {
-  margin-left: 20px;
+  padding: 10px;
   vertical-align: middle;
 }
 
 .menu{
   background-color: var(--third-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 ul{

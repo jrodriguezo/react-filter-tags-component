@@ -3,7 +3,8 @@ import { Collapse } from "react-collapse";
 import "./App.css";
 import { SIDEBAR } from "./data/sidebar";
 import { TAGS } from "./data/tags";
-import { BsArrowDownCircle } from "react-icons/bs";
+import { MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md";
+import getInitialStateOfCollapsablePages from "./services/getInitialStateOfCollapsablePages";
 
 function App() {
   const [tags, setTags] = useState([]);
@@ -11,18 +12,8 @@ function App() {
   const sidebarData = SIDEBAR;
   const tagsData = TAGS;
 
-  const settings = [];
-
-  sidebarData.pages.map(({ title }) => {
-    return settings.push({
-      id: title,
-      open: false,
-    });
-  });
-
-  const initialStateForOpenCollapse = {
-    settings: settings,
-  };
+  const initialStateForOpenCollapse =
+    getInitialStateOfCollapsablePages(sidebarData);
 
   const [openCollapse, setOpenCollapse] = useState(initialStateForOpenCollapse);
 
@@ -70,6 +61,10 @@ function App() {
     []
   );
 
+  const isCollapseOpened = (titleId) => {
+    return openCollapse.settings.find((item) => item.id === titleId).open;
+  };
+
   return (
     <>
       {tags.length > 0 && (
@@ -94,24 +89,28 @@ function App() {
               return (
                 <>
                   <li>
-                    <div className="menu">
-                      <button onClick={openCollapsable(title)}>
+                    <button onClick={openCollapsable(title)}>
+                      <div className="menu">
                         <span className="nav-text">{title}</span>
-                        <BsArrowDownCircle size={20} className="nav-text-logo" />
-                      </button>
-                    </div>
+                        {isCollapseOpened(title) ? (
+                          <MdKeyboardArrowDown
+                            size={20}
+                            className="nav-text-logo"
+                          />
+                        ) : (
+                          <MdKeyboardArrowRight
+                            size={20}
+                            className="nav-text-logo"
+                          />
+                        )}
+                      </div>
+                    </button>
 
                     <ul>
                       {pageFiltered.map(({ title: name, content, tags }) => {
                         return (
                           <>
-                            <Collapse
-                              isOpened={
-                                openCollapse.settings.find(
-                                  (item) => item.id === title
-                                ).open
-                              }
-                            >
+                            <Collapse isOpened={isCollapseOpened(title)}>
                               {name}
                               <ul className="tag">
                                 {tags.map((tag, key) => {
